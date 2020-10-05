@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+
+  haproxy-postgres:
+    image: devsadds/haproxy-postgres:2.2.3_consul-1.8.4_consul-template-0.25.1-v1.1.1
+    build: 
+      context: build/haproxy-postgres/.
+      args:
+        BASE_IMAGE : "ubuntu:focal"
+        APP_VER: "2.2.3"
+        CONSUL_VERSION: "1.8.4"
+        CONSUL_TEMPLATE_VERSION: "0.25.1"
+    environment:
+        DOCKER_ROLE: "haproxy-postgres"
+        DISCOVERY_SERVICE_HOST: "consul-prod"
+        DISCOVERY_SERVICE_NAME: "postgres-12-repmgr"
+        HAPROXY_STATS_URL: "/"
+        HAPROXY_STATS_AUTH_USER: "devsadds"
+        HAPROXY_STATS_AUTH_PASSWORD: "devsadds"
+        HAPROXY_STATS_ALLOW_HOSTS: "192.168.56.0/24 10.0.0.0/8 172.0.0.0/8 127.0.0.1/32 "
+        HAPROXY_SERVICE_ALLOW_HOSTS: "192.168.56.0/24 10.0.0.0/8 172.0.0.0/8 127.0.0.1/32 "
+        SERVER_NAME: "haproxy-postgres"
+        HAPROXY_POSTGRES_BACKEND_MAX_CONN: "120"
+        HAPROXY_POSTGRES_CHECK_USER: "hpclustercheckuser"
+        DISCOVERY_SERVICE_NAME_POSTGRES_READER: "postgres-12-repmgr"
+        DISCOVERY_SERVICE_NAME_POSTGRES_WRITER: "postgres-12-repmgr"
